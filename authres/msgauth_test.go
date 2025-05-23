@@ -1,6 +1,7 @@
 package authres
 
 type msgauthTest struct {
+	name       string
 	value      string
 	identifier string
 	results    []Result
@@ -8,11 +9,13 @@ type msgauthTest struct {
 
 var msgauthTests = []msgauthTest{
 	{
+		name:       "none",
 		value:      "example.org; none",
 		identifier: "example.org",
 		results:    nil,
 	},
 	{
+		name:       "dkim=none",
 		value:      "example.com; dkim=none ",
 		identifier: "example.com",
 		results: []Result{
@@ -20,6 +23,7 @@ var msgauthTests = []msgauthTest{
 		},
 	},
 	{
+		name: "spf=pass",
 		value: "example.com;" +
 			" spf=pass smtp.mailfrom=example.net",
 		identifier: "example.com",
@@ -28,6 +32,7 @@ var msgauthTests = []msgauthTest{
 		},
 	},
 	{
+		name: "spf=fail",
 		value: "example.com;" +
 			" spf=fail reason=bad smtp.mailfrom=example.net",
 		identifier: "example.com",
@@ -36,6 +41,7 @@ var msgauthTests = []msgauthTest{
 		},
 	},
 	{
+		name: "auth=pass spf=pass",
 		value: "example.com;" +
 			" auth=pass smtp.auth=sender@example.com;" +
 			" spf=pass smtp.mailfrom=example.com",
@@ -46,6 +52,7 @@ var msgauthTests = []msgauthTest{
 		},
 	},
 	{
+		name: "sender-id=pass",
 		value: "example.com;" +
 			" sender-id=pass header.from=example.com",
 		identifier: "example.com",
@@ -54,6 +61,7 @@ var msgauthTests = []msgauthTest{
 		},
 	},
 	{
+		name: "sender-id=hardfail dkim=pass",
 		value: "example.com;" +
 			" sender-id=hardfail header.from=example.com;" +
 			" dkim=pass header.i=sender@example.com",
@@ -64,6 +72,7 @@ var msgauthTests = []msgauthTest{
 		},
 	},
 	{
+		name: "auth=pass spf=hardfail",
 		value: "example.com;" +
 			" auth=pass smtp.auth=sender@example.com;" +
 			" spf=hardfail smtp.mailfrom=example.com",
@@ -74,6 +83,7 @@ var msgauthTests = []msgauthTest{
 		},
 	},
 	{
+		name: "dkim=pass dkim=fail",
 		value: "example.com;" +
 			" dkim=pass header.i=@mail-router.example.net;" +
 			" dkim=fail header.i=@newyork.example.com",
